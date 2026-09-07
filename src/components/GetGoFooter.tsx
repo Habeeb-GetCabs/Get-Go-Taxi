@@ -310,9 +310,9 @@ export default function GetGoFooter({ onNavigate }: GetGoFooterProps) {
                 </p>
                 <h4 className="text-sm font-bold text-white pt-2">1. Billing & Tariff Rules</h4>
                 <p className="text-xs text-slate-300">
-                  • Outstation round-trips require a minimum billing of 250 km per calendar day.<br />
-                  • Driver Batta (₹500/day for Outstation), Toll Fees, Interstate Permit charges, and Parking charges are billed as actuals.<br />
-                  • Day fare hours apply from 06:00 AM to 10:00 PM. Night driving allowance applies between 10:00 PM and 06:00 AM.
+                  • All taxi bookings include fuel, vehicle charges, and dedicated chauffeur service.<br />
+                  • Toll Fees, Interstate Permit charges, and Parking fees are billed strictly at actual government receipts.<br />
+                  • Day fare hours apply from 06:00 AM to 10:00 PM. Standard night driving terms apply between 10:00 PM and 06:00 AM.
                 </p>
                 <h4 className="text-sm font-bold text-white pt-2">2. Passenger Safety & Vehicle Care</h4>
                 <p className="text-xs text-slate-300">

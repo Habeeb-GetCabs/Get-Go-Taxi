@@ -20,25 +20,25 @@ export default function GetGoPopularRoutes({ onOpenBooking }: GetGoPopularRoutes
   const [activeCategory, setActiveCategory] = useState<'oneway' | 'outstation'>('oneway');
 
   const onewayRoutes = [
-    { from: 'Coimbatore', to: 'Bangalore', distance: '360 km', duration: '6.5 hrs', sedan: '₹ 6,260', suv: '₹ 7,700', popular: true },
-    { from: 'Coimbatore', to: 'Chennai', distance: '505 km', duration: '8.5 hrs', sedan: '₹ 8,580', suv: '₹ 10,600', popular: true },
-    { from: 'Coimbatore', to: 'Salem', distance: '165 km', duration: '3.0 hrs', sedan: '₹ 3,140', suv: '₹ 4,100', popular: false },
-    { from: 'Coimbatore', to: 'Madurai', distance: '215 km', duration: '4.0 hrs', sedan: '₹ 3,940', suv: '₹ 5,100', popular: false },
-    { from: 'Coimbatore', to: 'Tiruchirappalli (Trichy)', distance: '215 km', duration: '4.2 hrs', sedan: '₹ 3,940', suv: '₹ 5,100', popular: false },
-    { from: 'Coimbatore', to: 'Kochi / Ernakulam', distance: '190 km', duration: '4.5 hrs', sedan: '₹ 3,540', suv: '₹ 4,600', popular: false },
-    { from: 'Coimbatore', to: 'Palani', distance: '105 km', duration: '2.5 hrs', sedan: '₹ 2,580', suv: '₹ 3,400', popular: false },
-    { from: 'Coimbatore', to: 'Ooty (Drop)', distance: '86 km', duration: '2.5 hrs', sedan: '₹ 2,580', suv: '₹ 3,400', popular: true },
+    { from: 'Coimbatore', to: 'Bangalore', distance: '360 km', duration: '6.5 hrs', sedan: '₹ 9,360', suv: '₹ 11,500', popular: true },
+    { from: 'Coimbatore', to: 'Chennai', distance: '505 km', duration: '8.5 hrs', sedan: '₹ 13,130', suv: '₹ 16,100', popular: true },
+    { from: 'Coimbatore', to: 'Salem', distance: '165 km', duration: '3.0 hrs', sedan: '₹ 4,290', suv: '₹ 5,300', popular: false },
+    { from: 'Coimbatore', to: 'Madurai', distance: '215 km', duration: '4.0 hrs', sedan: '₹ 5,590', suv: '₹ 6,900', popular: false },
+    { from: 'Coimbatore', to: 'Tiruchirappalli (Trichy)', distance: '215 km', duration: '4.2 hrs', sedan: '₹ 5,590', suv: '₹ 6,900', popular: false },
+    { from: 'Coimbatore', to: 'Kochi / Ernakulam', distance: '190 km', duration: '4.5 hrs', sedan: '₹ 4,940', suv: '₹ 6,100', popular: false },
+    { from: 'Coimbatore', to: 'Palani', distance: '105 km', duration: '2.5 hrs', sedan: '₹ 2,730', suv: '₹ 3,400', popular: false },
+    { from: 'Coimbatore', to: 'Ooty (Drop)', distance: '86 km', duration: '2.5 hrs', sedan: '₹ 3,000', suv: '₹ 4,200', popular: true },
   ];
 
   const outstationFleets = [
     {
       name: 'Sedan (Swift Dzire / Etios)',
       seats: '4 Passengers',
-      perKm: '₹ 16 / km',
+      perKm: '₹ 15 / km',
       minKm: '250 km / day',
       bata: '₹ 500 / day',
       ideal: 'Budget outstation travel, family weekend trips, interstate business visits',
-      tag: 'Best Economy • Fixed ₹16/km',
+      tag: 'Best Economy • Fixed ₹15/km',
     },
     {
       name: 'SUV (Toyota Innova / Ertiga)',

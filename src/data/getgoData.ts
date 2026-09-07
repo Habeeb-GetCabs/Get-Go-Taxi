@@ -97,7 +97,7 @@ export const VEHICLE_TARIFFS: VehicleTariff[] = [
     seats: 'Up to 4 Passengers',
     luggage: '2-3 Medium Suitcases + Hand luggage',
     ac: true,
-    perKmRate: 16,
+    perKmRate: 15,
     minKmPerDayOutstation: 250,
     driverBataPerDay: 500,
     nightAllowancePerNight: 300,
@@ -763,10 +763,10 @@ export const POINT_TO_POINT_ROUTES: PointToPointRoute[] = [
     distanceKm: 86,
     estDuration: '2.5 – 3.0 Hours',
     highwayRoute: 'NH 181 via Mettupalayam & Coonoor',
-    sedanFareEst: 2600,
-    innovaFareEst: 3900,
+    sedanFareEst: 3000, // 100 km min @ ₹26/km (₹2,600) + ₹400 Hill Surcharge
+    innovaFareEst: 4200,
     tempoFareEst: 5800,
-    tollNote: 'Mettupalayam bypass toll included. Nilgiris green e-pass mandatory.',
+    tollNote: 'Includes Nilgiris hill road tariff & Mettupalayam toll. Green e-pass assistance provided.',
   },
   {
     id: 'cbe-airport',
@@ -787,9 +787,9 @@ export const POINT_TO_POINT_ROUTES: PointToPointRoute[] = [
     distanceKm: 52,
     estDuration: '1.0 – 1.2 Hours',
     highwayRoute: 'NH 544 (Avinashi Expressway)',
-    sedanFareEst: 1600,
-    innovaFareEst: 2400,
-    tempoFareEst: 3600,
+    sedanFareEst: 2600, // 100 km min @ ₹26/km
+    innovaFareEst: 3200,
+    tempoFareEst: 4200,
     tollNote: 'Includes Kaniyur toll gate fee.',
   },
   {
@@ -799,9 +799,9 @@ export const POINT_TO_POINT_ROUTES: PointToPointRoute[] = [
     distanceKm: 42,
     estDuration: '50 – 60 Mins',
     highwayRoute: 'SH 174 (Pollachi Main Road via Kinathukadavu)',
-    sedanFareEst: 1400,
-    innovaFareEst: 2100,
-    tempoFareEst: 3200,
+    sedanFareEst: 2600, // 100 km min @ ₹26/km
+    innovaFareEst: 3200,
+    tempoFareEst: 4200,
     tollNote: 'Smooth 4-lane expressway with Kinathukadavu toll included.',
   },
   {
@@ -811,10 +811,10 @@ export const POINT_TO_POINT_ROUTES: PointToPointRoute[] = [
     distanceKm: 170,
     estDuration: '4.5 – 5.0 Hours',
     highwayRoute: 'Via Dharapuram, Oddanchatram & Ghat Road',
-    sedanFareEst: 4600,
+    sedanFareEst: 4820, // 170 km @ ₹26/km (₹4,420) + ₹400 Hill Surcharge
     innovaFareEst: 6800,
     tempoFareEst: 9800,
-    tollNote: 'Includes Dharapuram toll & Kodai municipality hill entry.',
+    tollNote: 'Includes Kodai hill road tariff & Dharapuram toll.',
   },
   {
     id: 'cbe-munnar',
@@ -823,10 +823,10 @@ export const POINT_TO_POINT_ROUTES: PointToPointRoute[] = [
     distanceKm: 160,
     estDuration: '4.5 – 5.0 Hours',
     highwayRoute: 'Via Pollachi, Udumalpet, Chinnar & Marayoor',
-    sedanFareEst: 4800,
+    sedanFareEst: 4560, // 160 km @ ₹26/km (₹4,160) + ₹400 Hill Surcharge
     innovaFareEst: 7200,
     tempoFareEst: 10500,
-    tollNote: 'Kerala interstate entry tax extra or included upon request.',
+    tollNote: 'Includes Munnar ghat road tariff. Kerala interstate permit extra at checkpost.',
   },
   {
     id: 'cbe-madurai',
@@ -835,9 +835,9 @@ export const POINT_TO_POINT_ROUTES: PointToPointRoute[] = [
     distanceKm: 215,
     estDuration: '4.0 – 4.5 Hours',
     highwayRoute: 'Via Dharapuram & Dindigul (NH 83)',
-    sedanFareEst: 4900,
-    innovaFareEst: 7100,
-    tempoFareEst: 10200,
+    sedanFareEst: 5590, // 215 km @ ₹26/km
+    innovaFareEst: 7500,
+    tempoFareEst: 10800,
     tollNote: 'Dindigul bypass expressway tolls applied.',
   },
   {
@@ -847,9 +847,9 @@ export const POINT_TO_POINT_ROUTES: PointToPointRoute[] = [
     distanceKm: 54,
     estDuration: '1.2 Hours',
     highwayRoute: 'NH 544 via Walayar border',
-    sedanFareEst: 1800,
-    innovaFareEst: 2700,
-    tempoFareEst: 4000,
+    sedanFareEst: 2600, // 100 km min @ ₹26/km
+    innovaFareEst: 3200,
+    tempoFareEst: 4400,
     tollNote: 'Walayar interstate checkpost crossing handled by driver.',
   },
 ];
@@ -915,8 +915,8 @@ export const FAQS: FAQItem[] = [
   {
     id: 'faq-2',
     category: 'pricing',
-    question: 'What is your price math and per-kilometer rate structure?',
-    answer: 'Our rates are transparent with zero hidden fees. For local rides, base fare is ₹80 with ₹28/km. Hourly city rentals are ₹350/hour (e.g. 2 Hr at ₹700, 4 Hr at ₹1,400, 8 Hr at ₹2,800, 12 Hr at ₹4,200). One-Way drop taxis are ₹16/km with a minimum 130 km coverage and ₹500 driver bata. Outstation round trips are ₹16/km with a minimum 250 km/day coverage and ₹500 driver bata per day. Toll, state permit, and parking charges are extra if applicable.',
+    question: 'How does GetGo Taxi calculate fares for my trip?',
+    answer: 'We provide upfront, guaranteed fixed quotes based on your exact route, travel duration, and vehicle choice. Every quote covers the vehicle, fuel, and professional chauffeur with zero surge pricing and zero hidden markups. Tolls, interstate permits, and parking charges are billed at actual government receipts. Use our live booking form for an instant, accurate quote.',
   },
   {
     id: 'faq-3',
@@ -957,8 +957,8 @@ export const FAQS: FAQItem[] = [
   {
     id: 'faq-9',
     category: 'pricing',
-    question: 'What are the night charges and driver allowance (bata)?',
-    answer: 'For outstation trips, driver bata ranges from ₹400/day for Sedans to ₹500/day for SUVs and ₹700/day for Tempo Travellers. Trips operating between 10:00 PM and 6:00 AM have a standard ₹300 night driving allowance.',
+    question: 'What are the night charges and driver allowance policies?',
+    answer: 'All standard chauffeur services are bundled into your upfront booking quote. For trips operating during late-night hours (between 10:00 PM and 6:00 AM), standard night driving conditions apply. Contact our 24/7 dispatch desk for any specific itinerary questions.',
   },
   {
     id: 'faq-10',

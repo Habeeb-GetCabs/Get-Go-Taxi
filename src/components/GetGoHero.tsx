@@ -515,10 +515,17 @@ export default function GetGoHero({ onNavigate }: GetGoHeroProps) {
                             )}
                           </div>
                         </div>
-                        <div className="text-right">
-                          <span className="inline-block text-3xs font-bold text-amber-950 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded leading-tight">
-                            {fareResult.disclaimer}
-                          </span>
+                        <div className="text-right space-y-1">
+                          {fareResult.isHillStation && (
+                            <span className="inline-block text-3xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-300 px-1.5 py-0.5 rounded leading-tight">
+                              🏔️ Hill Route Tariff Included
+                            </span>
+                          )}
+                          <div>
+                            <span className="inline-block text-3xs font-bold text-amber-950 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded leading-tight">
+                              {fareResult.disclaimer}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
