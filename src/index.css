@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --color-brand-red: #C62139;
+  --color-brand-red-dark: #9E1B2E;
+  --color-brand-yellow: #FFC12E;
+}
+
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1a1d20;
+  background-color: #f8f9fa;
+  -webkit-font-smoothing: antialiased;
+}

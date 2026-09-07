@@ -1,0 +1,6 @@
+{
+  "name": "GetGo Taxi",
+  "description": "GetGo Taxi — Premier tour packages from Coimbatore, Tiruppur, and Palladam to Ooty, Munnar, Valparai, safe cab taxi services, airport transfers, and corporate rentals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
