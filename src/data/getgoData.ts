@@ -97,7 +97,7 @@ export const VEHICLE_TARIFFS: VehicleTariff[] = [
     seats: 'Up to 4 Passengers',
     luggage: '2-3 Medium Suitcases + Hand luggage',
     ac: true,
-    perKmRate: 15,
+    perKmRate: 16,
     minKmPerDayOutstation: 250,
     driverBataPerDay: 500,
     nightAllowancePerNight: 300,
@@ -916,7 +916,7 @@ export const FAQS: FAQItem[] = [
     id: 'faq-2',
     category: 'pricing',
     question: 'What is your price math and per-kilometer rate structure?',
-    answer: 'Our rates are transparent with zero hidden fees. For local rides, base fare is ₹80 with ₹28/km. Hourly city rentals are ₹350/hour (e.g. 2 Hr at ₹700, 4 Hr at ₹1,400, 8 Hr at ₹2,800, 12 Hr at ₹4,200). One-Way drop taxis are ₹16/km with a minimum 130 km coverage and ₹500 driver bata. Outstation round trips are ₹15/km with a minimum 250 km/day coverage and ₹500 driver bata per day. Toll, state permit, and parking charges are extra if applicable.',
+    answer: 'Our rates are transparent with zero hidden fees. For local rides, base fare is ₹80 with ₹28/km. Hourly city rentals are ₹350/hour (e.g. 2 Hr at ₹700, 4 Hr at ₹1,400, 8 Hr at ₹2,800, 12 Hr at ₹4,200). One-Way drop taxis are ₹16/km with a minimum 130 km coverage and ₹500 driver bata. Outstation round trips are ₹16/km with a minimum 250 km/day coverage and ₹500 driver bata per day. Toll, state permit, and parking charges are extra if applicable.',
   },
   {
     id: 'faq-3',

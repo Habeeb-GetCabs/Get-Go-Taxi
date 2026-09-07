@@ -5,6 +5,7 @@ import {
   ChevronRight,
   Clock,
   MapPin,
+  MessageSquare,
   Phone,
   ShieldCheck,
   Sparkles,
@@ -127,14 +128,18 @@ export default function GetGoHero({ onNavigate }: GetGoHeroProps) {
       details = `*Pickup Area:* ${pickupLocation}%0A*Drop Area:* ${dropLocation || 'Local City'}%0A`;
     }
 
+    const fareLine = fareResult.isCustomQuote
+      ? `*Rate Request:* Call / WhatsApp for Best Discount Rate on ${vehicleChoice}%0A`
+      : `*Estimated Final Fare (Sedan):* ₹${fareResult.finalFare.toLocaleString('en-IN')}%0A`;
+
     const text = `*Cab Booking Request - GetGo Taxi*%0A%0A` +
       `*Trip Category:* ${tripType.toUpperCase()} CAB%0A` +
       details +
       (tripType !== 'outstation' ? `*Date:* ${pickupDate}%0A` : '') +
       `*Vehicle:* ${vehicleChoice}%0A` +
-      `*Estimated Final Fare:* ₹${fareResult.finalFare.toLocaleString('en-IN')}%0A` +
+      fareLine +
       `*Note:* ${fareResult.disclaimer.replace('*', '')}%0A%0A` +
-      `Hello GetGo Taxi, please confirm cab availability and booking.`;
+      `Hello GetGo Taxi, please confirm cab availability and dispatch details.`;
 
     window.open(`https://wa.me/${GETGO_CONTACT.whatsappNumber.replace('+', '')}?text=${text}`, '_blank');
   };
@@ -395,11 +400,11 @@ export default function GetGoHero({ onNavigate }: GetGoHeroProps) {
                           onChange={(e) => setVehicleChoice(e.target.value)}
                           className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#C62139] focus:outline-hidden bg-white text-slate-800 font-medium"
                         >
-                          <option value="Sedan (Dzire / Etios)">Sedan (Dzire / Etios - 4 Seater)</option>
-                          <option value="Innova SUV">Innova SUV (6-7 Seater)</option>
-                          <option value="Innova Crysta">Innova Crysta Luxury</option>
-                          <option value="Tempo Traveller">Tempo Traveller (12-20 Seater)</option>
-                          <option value="Mini Bus / Coach">Mini Bus / Coach (25-35 Seater)</option>
+                          <option value="Sedan (Dzire / Etios)">Sedan (Dzire / Etios - 4 Seater) — Instant Quote</option>
+                          <option value="Innova SUV">Innova SUV (6-7 Seater) — Call/WhatsApp for Rates</option>
+                          <option value="Innova Crysta">Innova Crysta Luxury — Call/WhatsApp for Rates</option>
+                          <option value="Tempo Traveller">Tempo Traveller (12-20 Seater) — Call/WhatsApp for Rates</option>
+                          <option value="Mini Bus / Coach">Mini Bus / Coach (25-35 Seater) — Call/WhatsApp for Rates</option>
                         </select>
                       </div>
                     </div>
@@ -438,53 +443,99 @@ export default function GetGoHero({ onNavigate }: GetGoHeroProps) {
                           onChange={(e) => setVehicleChoice(e.target.value)}
                           className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#C62139] focus:outline-hidden bg-white text-slate-800 font-medium"
                         >
-                          <option value="Sedan (Dzire / Etios)">Sedan (Dzire / Etios - 4 Seater)</option>
-                          <option value="Innova SUV">Innova SUV (6-7 Seater)</option>
-                          <option value="Innova Crysta">Innova Crysta Luxury</option>
-                          <option value="Tempo Traveller">Tempo Traveller (12-20 Seater)</option>
-                          <option value="Mini Bus / Coach">Mini Bus / Coach (25-35 Seater)</option>
+                          <option value="Sedan (Dzire / Etios)">Sedan (Dzire / Etios - 4 Seater) — Instant Quote</option>
+                          <option value="Innova SUV">Innova SUV (6-7 Seater) — Call/WhatsApp for Rates</option>
+                          <option value="Innova Crysta">Innova Crysta Luxury — Call/WhatsApp for Rates</option>
+                          <option value="Tempo Traveller">Tempo Traveller (12-20 Seater) — Call/WhatsApp for Rates</option>
+                          <option value="Mini Bus / Coach">Mini Bus / Coach (25-35 Seater) — Call/WhatsApp for Rates</option>
                         </select>
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* Clean Final Fare Card - Shows only final fare when locations are entered */}
-                <div className="p-3.5 bg-gradient-to-r from-red-50 to-amber-50/50 border border-red-200/80 rounded-xl">
-                  <div className="flex items-center justify-between gap-2">
-                    <div>
-                      <span className="text-3xs font-black uppercase tracking-wider text-slate-700 block">
-                        Estimated Final Fare
-                      </span>
-                      <div className="text-[#C62139] tracking-tight font-black">
-                        {hasLocations ? (
-                          <span className="text-xl sm:text-2xl">₹{fareResult.finalFare.toLocaleString('en-IN')}</span>
-                        ) : (
-                          <span className="text-2xs sm:text-xs font-bold text-slate-500 block pt-0.5">
-                            Enter pickup & drop location to estimate
+                {/* Fare Display Card */}
+                {fareResult.isCustomQuote ? (
+                  /* Non-Sedan vehicles: Call or WhatsApp for best rate */
+                  <div className="space-y-2">
+                    <div className="p-3.5 bg-gradient-to-r from-amber-50 to-orange-50/70 border border-amber-300/80 rounded-xl">
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <span className="text-3xs font-black uppercase tracking-wider text-amber-900 block">
+                            Direct Fleet Tariff
                           </span>
-                        )}
+                          <div className="text-amber-950 tracking-tight font-black text-base sm:text-lg pt-0.5">
+                            Call or WhatsApp for Best Rates
+                          </div>
+                          <span className="text-2xs text-amber-800 font-medium block pt-0.5">
+                            Special discount rates available for {vehicleChoice}
+                          </span>
+                        </div>
+                        <div className="text-right">
+                          <span className="inline-block text-3xs font-bold text-amber-950 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded leading-tight">
+                            Best Rate Guaranteed
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <span className="inline-block text-3xs font-bold text-amber-950 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded leading-tight">
-                        {fareResult.disclaimer}
-                      </span>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+                      <button
+                        type="submit"
+                        className="w-full py-3 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-1.5"
+                      >
+                        <MessageSquare className="w-4 h-4 text-emerald-100" />
+                        <span>WhatsApp for Best Rate</span>
+                      </button>
+                      <a
+                        href={`tel:${GETGO_CONTACT.phone}`}
+                        className="w-full py-3 px-3 bg-[#C62139] hover:bg-[#9E1B2E] text-white font-bold text-xs sm:text-sm rounded-xl shadow-md transition flex items-center justify-center gap-1.5"
+                      >
+                        <Phone className="w-4 h-4 text-amber-300" />
+                        <span>Call Dispatch Desk</span>
+                      </a>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  /* Sedan Instant Quote */
+                  <div className="space-y-2">
+                    <div className="p-3.5 bg-gradient-to-r from-red-50 to-amber-50/50 border border-red-200/80 rounded-xl">
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <span className="text-3xs font-black uppercase tracking-wider text-slate-700 block">
+                            Estimated Final Fare (Sedan)
+                          </span>
+                          <div className="text-[#C62139] tracking-tight font-black">
+                            {hasLocations ? (
+                              <span className="text-xl sm:text-2xl">₹{fareResult.finalFare.toLocaleString('en-IN')}</span>
+                            ) : (
+                              <span className="text-2xs sm:text-xs font-bold text-slate-500 block pt-0.5">
+                                Enter pickup & drop location to estimate
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className="inline-block text-3xs font-bold text-amber-950 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded leading-tight">
+                            {fareResult.disclaimer}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-                <button
-                  type="submit"
-                  className="w-full py-3 px-4 bg-[#C62139] hover:bg-[#9E1B2E] text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 mt-2"
-                >
-                  <Phone className="w-4 h-4 text-amber-300" />
-                  <span>
-                    {hasLocations
-                      ? `Book Cab at ₹${fareResult.finalFare.toLocaleString('en-IN')}`
-                      : 'Book Cab via WhatsApp'}
-                  </span>
-                </button>
+                    <button
+                      type="submit"
+                      className="w-full py-3 px-4 bg-[#C62139] hover:bg-[#9E1B2E] text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 mt-2"
+                    >
+                      <Phone className="w-4 h-4 text-amber-300" />
+                      <span>
+                        {hasLocations
+                          ? `Book Sedan at ₹${fareResult.finalFare.toLocaleString('en-IN')}`
+                          : 'Book Cab via WhatsApp'}
+                      </span>
+                    </button>
+                  </div>
+                )}
 
                 <p className="text-center text-2xs text-slate-700 font-medium">
                   Or call directly:{' '}

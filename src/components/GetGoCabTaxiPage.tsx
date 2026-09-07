@@ -29,7 +29,7 @@ export default function GetGoCabTaxiPage({ onOpenBooking }: GetGoCabTaxiPageProp
       seats: '4 Passengers + 1 Driver',
       luggage: '2 Large Bags + 2 Hand Bags',
       ac: true,
-      perKmOutstation: '₹ 15 / km',
+      perKmOutstation: '₹ 16 / km',
       driverBata: '₹ 500 / day',
       hourlyPackages: [
         { hours: '4 Hrs / 40 Km', rate: '₹ 1,400' },

@@ -34,11 +34,11 @@ export default function GetGoPopularRoutes({ onOpenBooking }: GetGoPopularRoutes
     {
       name: 'Sedan (Swift Dzire / Etios)',
       seats: '4 Passengers',
-      perKm: '₹ 15 / km',
+      perKm: '₹ 16 / km',
       minKm: '250 km / day',
       bata: '₹ 500 / day',
       ideal: 'Budget outstation travel, family weekend trips, interstate business visits',
-      tag: 'Best Economy • Fixed ₹15/km',
+      tag: 'Best Economy • Fixed ₹16/km',
     },
     {
       name: 'SUV (Toyota Innova / Ertiga)',

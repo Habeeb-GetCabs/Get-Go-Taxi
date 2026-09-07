@@ -87,6 +87,7 @@ export default function FareCalculator() {
   let disclaimer = '';
   let tripTitle = '';
   let tripSummaryText = '';
+  const isCustomQuote = selectedVehicleId !== 'sedan';
 
   if (tripType === 'local') {
     const result = calculateFinalFare({
@@ -99,7 +100,7 @@ export default function FareCalculator() {
     finalFare = result.finalFare;
     disclaimer = result.disclaimer;
     tripTitle = `${currentVehicle.name} - Local City Ride (${localDistanceKm} km)`;
-    tripSummaryText = `Pickup: ${localPickup} → Drop: ${localDrop}`;
+    tripSummaryText = `Pickup: ${localPickup || 'Coimbatore'} → Drop: ${localDrop || 'Local'}`;
   } else if (tripType === 'hourly') {
     const pkgString = `${packageHours} Hours / ${packageHours * 10} Km`;
     const result = calculateFinalFare({
@@ -122,7 +123,7 @@ export default function FareCalculator() {
     finalFare = result.finalFare;
     disclaimer = result.disclaimer;
     tripTitle = `${currentVehicle.name} - One-Way Drop (${oneWayKm} km)`;
-    tripSummaryText = `${oneWayPickup} → ${oneWayDrop} (Zero return kilometer penalty)`;
+    tripSummaryText = `${oneWayPickup || 'Origin'} → ${oneWayDrop || 'Destination'} (Zero return penalty)`;
   } else if (tripType === 'outstation') {
     const result = calculateFinalFare({
       tripType: 'outstation',
@@ -135,7 +136,7 @@ export default function FareCalculator() {
     finalFare = result.finalFare;
     disclaimer = result.disclaimer;
     tripTitle = `${currentVehicle.name} - Outstation Round Trip (${tripDays} Day${tripDays > 1 ? 's' : ''})`;
-    tripSummaryText = `Coimbatore ⇄ ${outstationDest} (${estimatedKm} km estimated)`;
+    tripSummaryText = `Coimbatore ⇄ ${outstationDest || 'Outstation Destination'} (${estimatedKm} km estimated)`;
   } else {
     // Airport transfers
     let fare = 950;
@@ -166,12 +167,16 @@ export default function FareCalculator() {
   }
 
   const handleCopyQuote = () => {
+    const fareLine = isCustomQuote
+      ? `Rate Quote: Call or WhatsApp for Best Rates`
+      : `Estimated Final Fare: ₹${finalFare.toLocaleString('en-IN')}`;
+
     const text = `🚖 *GetGo Taxi Booking Summary*
 Vehicle: ${currentVehicle.name}
 Trip Type: ${tripType.toUpperCase()}
 Route / Package: ${tripTitle}
 Details: ${tripSummaryText}${tripDateInfo}
-Estimated Final Fare: ₹${finalFare.toLocaleString('en-IN')}
+${fareLine}
 Note: ${disclaimer.replace('*', '')}
 📞 24/7 Helpline: ${CONTACT_INFO.phoneFormatted}`;
 
@@ -181,7 +186,9 @@ Note: ${disclaimer.replace('*', '')}
   };
 
   const whatsappMessage = encodeURIComponent(
-    `Hello GetGo Taxi, I would like to book this trip:\n\nVehicle: ${currentVehicle.name}\nTrip Category: ${tripType.toUpperCase()}\nDetails: ${tripSummaryText}${tripDateInfo}\nEstimated Final Fare: ₹${finalFare.toLocaleString('en-IN')}\nNote: ${disclaimer.replace('*', '')}\n\nPlease confirm availability!`
+    isCustomQuote
+      ? `Hello GetGo Taxi, I would like to request the best rate quote for:\n\nVehicle: ${currentVehicle.name}\nTrip Category: ${tripType.toUpperCase()}\nDetails: ${tripSummaryText}${tripDateInfo}\n\nPlease share your discounted fleet tariff!`
+      : `Hello GetGo Taxi, I would like to book this trip:\n\nVehicle: ${currentVehicle.name}\nTrip Category: ${tripType.toUpperCase()}\nDetails: ${tripSummaryText}${tripDateInfo}\nEstimated Final Fare: ₹${finalFare.toLocaleString('en-IN')}\nNote: ${disclaimer.replace('*', '')}\n\nPlease confirm availability!`
   );
 
   return (
@@ -287,8 +294,10 @@ Note: ${disclaimer.replace('*', '')}
                         <div className="font-bold text-slate-900 text-sm">{vehicle.name}</div>
                         <div className="text-xs text-slate-500 mt-0.5">{vehicle.models}</div>
                       </div>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
-                        {vehicle.category.toUpperCase()}
+                      <span className={`text-3xs font-bold px-2 py-0.5 rounded-md ${
+                        vehicle.id === 'sedan' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                      }`}>
+                        {vehicle.id === 'sedan' ? 'Instant Quote (₹16/km)' : 'Call/WhatsApp for Rates'}
                       </span>
                     </div>
                     <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
@@ -620,36 +629,59 @@ Note: ${disclaimer.replace('*', '')}
             </div>
 
             {/* Total Highlight Card */}
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-amber-500/30 shadow-inner space-y-3">
-              <div className="text-2xs font-bold uppercase tracking-wider text-amber-400">
-                Final Estimated Fare
-              </div>
-              <div className="flex items-baseline gap-2">
-                {hasLocations ? (
-                  <>
-                    <span className="text-4xl sm:text-5xl font-black text-amber-400 tracking-tight">
-                      ₹{finalFare.toLocaleString('en-IN')}
-                    </span>
-                    <span className="text-xs text-slate-400 font-medium">Fixed Quote</span>
-                  </>
-                ) : (
-                  <span className="text-sm font-bold text-slate-300">
-                    Enter pickup & drop locations above to estimate fare
-                  </span>
-                )}
-              </div>
-
-              {/* Disclaimer Notice */}
-              <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-200 text-xs">
-                <div className="font-bold flex items-center gap-1.5 text-amber-300">
-                  <span>⚠️</span>
-                  <span>Notice</span>
+            {isCustomQuote ? (
+              <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-amber-500/30 shadow-inner space-y-3">
+                <div className="text-2xs font-bold uppercase tracking-wider text-amber-400">
+                  Fleet Direct Tariff
                 </div>
-                <p className="mt-0.5 text-2xs leading-relaxed text-amber-100">
-                  {disclaimer.replace('*', '')}
+                <div className="text-2xl sm:text-3xl font-black text-amber-400 tracking-tight">
+                  Call / WhatsApp for Best Rates
+                </div>
+                <p className="text-xs text-slate-300">
+                  Automated instant quoting is reserved for Sedans. For {currentVehicle.name}, please contact our 24/7 dispatch desk for special seasonal discounts and group packages.
                 </p>
+                <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-200 text-xs">
+                  <div className="font-bold flex items-center gap-1.5 text-amber-300">
+                    <span>⚡</span>
+                    <span>Best Price Guarantee</span>
+                  </div>
+                  <p className="mt-0.5 text-2xs leading-relaxed text-amber-100">
+                    Direct operator pricing with zero agent commission.
+                  </p>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 border border-amber-500/30 shadow-inner space-y-3">
+                <div className="text-2xs font-bold uppercase tracking-wider text-amber-400">
+                  Final Estimated Fare
+                </div>
+                <div className="flex items-baseline gap-2">
+                  {hasLocations ? (
+                    <>
+                      <span className="text-4xl sm:text-5xl font-black text-amber-400 tracking-tight">
+                        ₹{finalFare.toLocaleString('en-IN')}
+                      </span>
+                      <span className="text-xs text-slate-400 font-medium">Fixed Quote</span>
+                    </>
+                  ) : (
+                    <span className="text-sm font-bold text-slate-300">
+                      Enter pickup & drop locations above to estimate fare
+                    </span>
+                  )}
+                </div>
+
+                {/* Disclaimer Notice */}
+                <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-200 text-xs">
+                  <div className="font-bold flex items-center gap-1.5 text-amber-300">
+                    <span>⚠️</span>
+                    <span>Notice</span>
+                  </div>
+                  <p className="mt-0.5 text-2xs leading-relaxed text-amber-100">
+                    {disclaimer.replace('*', '')}
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Ride Assurances */}
             <div className="space-y-2 pt-5 text-xs text-slate-300">
@@ -674,19 +706,40 @@ Note: ${disclaimer.replace('*', '')}
 
           {/* Action CTAs */}
           <div className="pt-6 space-y-2.5">
-            <a
-              href={`https://wa.me/${CONTACT_INFO.whatsappNumber.replace('+', '')}?text=${whatsappMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-3.5 rounded-xl bg-[#C62139] hover:bg-[#9E1B2E] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md"
-            >
-              <MessageSquare className="w-4 h-4 text-amber-300" />
-              <span>
-                {hasLocations
-                  ? `Book Cab via WhatsApp at ₹${finalFare.toLocaleString('en-IN')}`
-                  : 'Book Cab via WhatsApp'}
-              </span>
-            </a>
+            {isCustomQuote ? (
+              <div className="space-y-2">
+                <a
+                  href={`https://wa.me/${CONTACT_INFO.whatsappNumber.replace('+', '')}?text=${whatsappMessage}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md"
+                >
+                  <MessageSquare className="w-4 h-4 text-emerald-100" />
+                  <span>WhatsApp for Best Rates</span>
+                </a>
+                <a
+                  href={`tel:${CONTACT_INFO.phonePrimary}`}
+                  className="w-full py-3 rounded-xl bg-[#C62139] hover:bg-[#9E1B2E] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-sm"
+                >
+                  <Phone className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Call Dispatch: {CONTACT_INFO.phoneFormatted}</span>
+                </a>
+              </div>
+            ) : (
+              <a
+                href={`https://wa.me/${CONTACT_INFO.whatsappNumber.replace('+', '')}?text=${whatsappMessage}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3.5 rounded-xl bg-[#C62139] hover:bg-[#9E1B2E] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md"
+              >
+                <MessageSquare className="w-4 h-4 text-amber-300" />
+                <span>
+                  {hasLocations
+                    ? `Book Sedan via WhatsApp at ₹${finalFare.toLocaleString('en-IN')}`
+                    : 'Book Sedan via WhatsApp'}
+                </span>
+              </a>
+            )}
 
             <div className="flex gap-2">
               <button

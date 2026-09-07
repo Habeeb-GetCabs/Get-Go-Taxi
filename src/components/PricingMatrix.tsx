@@ -25,12 +25,12 @@ export default function PricingMatrix() {
         <div className="flex items-center gap-3">
           <div className="text-right">
             <div className="text-xs text-slate-500">Sedan starting from</div>
-            <div className="text-xl font-extrabold text-amber-600">₹15 / KM</div>
+            <div className="text-xl font-extrabold text-amber-600">₹16 / KM</div>
           </div>
           <div className="w-px h-8 bg-slate-200"></div>
           <div className="text-right">
-            <div className="text-xs text-slate-500">Innova starting from</div>
-            <div className="text-xl font-extrabold text-slate-900">₹16 / KM</div>
+            <div className="text-xs text-slate-500">Innova & Tempo</div>
+            <div className="text-xs font-bold text-amber-800 bg-amber-100 px-2 py-1 rounded">Call / WhatsApp</div>
           </div>
         </div>
       </div>
