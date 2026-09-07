@@ -12,6 +12,7 @@ import {
   X,
 } from 'lucide-react';
 import { GETGO_CONTACT } from '../data/tourData';
+import { trackPhoneCall } from '../utils/analytics';
 
 interface GetGoHeaderProps {
   activePage: string;
@@ -185,6 +186,7 @@ export default function GetGoHeader({ activePage, setActivePage, onOpenBooking }
             {/* Direct Mobile Phone Number Button */}
             <a
               href={`tel:${GETGO_CONTACT.phone}`}
+              onClick={() => trackPhoneCall('header_phone_button')}
               className="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-red-50 hover:bg-red-100 text-[#C62139] font-bold text-xs sm:text-sm border border-red-200/80 transition shadow-2xs group"
               title={`Call ${GETGO_CONTACT.phoneFormatted}`}
             >

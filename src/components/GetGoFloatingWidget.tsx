@@ -1,8 +1,10 @@
 import { Phone, MessageSquare } from 'lucide-react';
 import { GETGO_CONTACT } from '../data/tourData';
+import { trackPhoneCall, trackWhatsAppClick } from '../utils/analytics';
 
 export default function GetGoFloatingWidget() {
   const handleWhatsApp = () => {
+    trackWhatsAppClick('floating_widget_desktop');
     const text = 'Hello GetGo Taxi, I would like to book a cab / tour package.';
     window.open(`https://wa.me/${GETGO_CONTACT.whatsappNumber.replace('+', '')}?text=${encodeURIComponent(text)}`, '_blank');
   };
@@ -15,6 +17,7 @@ export default function GetGoFloatingWidget() {
           {/* Direct Call Button */}
           <a
             href={`tel:${GETGO_CONTACT.phone}`}
+            onClick={() => trackPhoneCall('mobile_bottom_cta')}
             className="flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-[#C62139] active:bg-[#9E1B2E] text-white font-black text-xs shadow-md transition"
             aria-label="Call GetGo Taxi Now"
           >
@@ -27,6 +30,7 @@ export default function GetGoFloatingWidget() {
             href={`https://wa.me/${GETGO_CONTACT.whatsappNumber.replace('+', '')}?text=${encodeURIComponent('Hello GetGo Taxi, I want to book a cab.')}`}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackWhatsAppClick('mobile_bottom_cta')}
             className="flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-emerald-600 active:bg-emerald-700 text-white font-black text-xs shadow-md transition"
             aria-label="Book Cab on WhatsApp"
           >

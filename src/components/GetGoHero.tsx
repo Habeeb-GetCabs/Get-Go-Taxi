@@ -55,7 +55,7 @@ export default function GetGoHero({ onNavigate }: GetGoHeroProps) {
   // Booking Form State: local | hourly | oneway | outstation
   const today = new Date().toISOString().split('T')[0];
   const [tripType, setTripType] = useState<'local' | 'hourly' | 'oneway' | 'outstation'>('local');
-  const [pickupLocation, setPickupLocation] = useState('Coimbatore');
+  const [pickupLocation, setPickupLocation] = useState('');
   const [dropLocation, setDropLocation] = useState('');
   const [hourlyPackage, setHourlyPackage] = useState('8 Hours / 80 Km (Full Day)');
   const [pickupDate, setPickupDate] = useState(today);
@@ -106,6 +106,10 @@ export default function GetGoHero({ onNavigate }: GetGoHeroProps) {
       vehicleType: vehicleChoice,
     });
   }, [tripType, pickupLocation, dropLocation, hourlyPackage, outstationDays, vehicleChoice]);
+
+  const hasLocations = tripType === 'hourly'
+    ? Boolean(pickupLocation.trim())
+    : Boolean(pickupLocation.trim() && dropLocation.trim());
 
   const slide = SLIDES[currentSlide];
 
@@ -445,15 +449,21 @@ export default function GetGoHero({ onNavigate }: GetGoHeroProps) {
                   </div>
                 )}
 
-                {/* Clean Final Fare Card - Shows only final fare, hides math calculation */}
+                {/* Clean Final Fare Card - Shows only final fare when locations are entered */}
                 <div className="p-3.5 bg-gradient-to-r from-red-50 to-amber-50/50 border border-red-200/80 rounded-xl">
                   <div className="flex items-center justify-between gap-2">
                     <div>
                       <span className="text-3xs font-black uppercase tracking-wider text-slate-700 block">
                         Estimated Final Fare
                       </span>
-                      <div className="text-xl sm:text-2xl font-black text-[#C62139] tracking-tight">
-                        ₹{fareResult.finalFare.toLocaleString('en-IN')}
+                      <div className="text-[#C62139] tracking-tight font-black">
+                        {hasLocations ? (
+                          <span className="text-xl sm:text-2xl">₹{fareResult.finalFare.toLocaleString('en-IN')}</span>
+                        ) : (
+                          <span className="text-2xs sm:text-xs font-bold text-slate-500 block pt-0.5">
+                            Enter pickup & drop location to estimate
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="text-right">
@@ -469,7 +479,11 @@ export default function GetGoHero({ onNavigate }: GetGoHeroProps) {
                   className="w-full py-3 px-4 bg-[#C62139] hover:bg-[#9E1B2E] text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2 mt-2"
                 >
                   <Phone className="w-4 h-4 text-amber-300" />
-                  <span>Book Cab at ₹{fareResult.finalFare.toLocaleString('en-IN')}</span>
+                  <span>
+                    {hasLocations
+                      ? `Book Cab at ₹${fareResult.finalFare.toLocaleString('en-IN')}`
+                      : 'Book Cab via WhatsApp'}
+                  </span>
                 </button>
 
                 <p className="text-center text-2xs text-slate-700 font-medium">

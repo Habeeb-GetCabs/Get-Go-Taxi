@@ -15,7 +15,7 @@ import { CORPORATE_STUDENT_DATA, GETGO_CONTACT } from '../data/tourData';
 export default function GetGoCorporatePage() {
   const [groupSize, setGroupSize] = useState('25-35');
   const [serviceCategory, setServiceCategory] = useState('Daily Corporate Shift');
-  const [routeDetails, setRouteDetails] = useState('Saravanampatti to Gandhipuram');
+  const [routeDetails, setRouteDetails] = useState('');
 
   const handleSubmitQuote = (e: FormEvent) => {
     e.preventDefault();

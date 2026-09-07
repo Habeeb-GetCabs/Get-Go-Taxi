@@ -55,6 +55,8 @@ export default function AddressAutocomplete({
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const justSelectedRef = useRef(false);
+  const lastSelectedRef = useRef<string | null>(null);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -69,6 +71,14 @@ export default function AddressAutocomplete({
 
   // Fetch / compute autocomplete suggestions ONLY when user types 3+ letters
   useEffect(() => {
+    // If the value changed because the user just picked a suggestion, keep dropdown closed
+    if (justSelectedRef.current || (lastSelectedRef.current && value === lastSelectedRef.current)) {
+      justSelectedRef.current = false;
+      setIsOpen(false);
+      setLiveSuggestions([]);
+      return;
+    }
+
     const query = value.trim();
 
     // Do NOT show suggestions if less than 3 letters
@@ -196,12 +206,16 @@ export default function AddressAutocomplete({
   }, [value, isDestination, tripType]);
 
   const handleSelect = (selectedName: string) => {
+    justSelectedRef.current = true;
+    lastSelectedRef.current = selectedName;
     onChange(selectedName);
     setIsOpen(false);
     setLiveSuggestions([]);
   };
 
   const handleClear = () => {
+    justSelectedRef.current = false;
+    lastSelectedRef.current = null;
     onChange('');
     setIsOpen(false);
     setLiveSuggestions([]);
@@ -252,11 +266,18 @@ export default function AddressAutocomplete({
           type="text"
           value={value}
           onChange={(e) => {
+            justSelectedRef.current = false;
+            lastSelectedRef.current = null;
             onChange(e.target.value);
           }}
           onKeyDown={handleKeyDown}
           onFocus={() => {
-            if (value.trim().length >= 3 && liveSuggestions.length > 0) {
+            if (
+              !justSelectedRef.current &&
+              lastSelectedRef.current !== value &&
+              value.trim().length >= 3 &&
+              liveSuggestions.length > 0
+            ) {
               setIsOpen(true);
             }
           }}
@@ -293,6 +314,9 @@ export default function AddressAutocomplete({
               <button
                 key={item.id}
                 type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault(); // Prevents input focus loss/flicker and ensures single-click select
+                }}
                 onClick={() => handleSelect(item.name)}
                 onMouseEnter={() => setHighlightIndex(idx)}
                 className={`w-full px-3 py-2 text-left transition flex items-start gap-2.5 ${

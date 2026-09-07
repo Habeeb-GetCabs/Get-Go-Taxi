@@ -21,7 +21,7 @@ export default function GetGoBookingModal({
 
   const today = new Date().toISOString().split('T')[0];
   const [tripType, setTripType] = useState<'local' | 'hourly' | 'oneway' | 'outstation'>(initialType);
-  const [pickup, setPickup] = useState('Coimbatore');
+  const [pickup, setPickup] = useState('');
   const [drop, setDrop] = useState('');
   const [hourlyPackage, setHourlyPackage] = useState(initialPackage);
   const [date, setDate] = useState(today);
@@ -65,6 +65,10 @@ export default function GetGoBookingModal({
       vehicleType: vehicle,
     });
   }, [tripType, pickup, drop, hourlyPackage, outstationDays, vehicle]);
+
+  const hasLocations = tripType === 'hourly'
+    ? Boolean(pickup.trim())
+    : Boolean(pickup.trim() && drop.trim());
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -365,8 +369,14 @@ export default function GetGoBookingModal({
                 <span className="text-3xs font-black uppercase tracking-wider text-slate-500 block">
                   Estimated Final Fare
                 </span>
-                <div className="text-xl sm:text-2xl font-black text-[#C62139] tracking-tight">
-                  ₹{fareResult.finalFare.toLocaleString('en-IN')}
+                <div className="text-[#C62139] tracking-tight font-black">
+                  {hasLocations ? (
+                    <span className="text-xl sm:text-2xl">₹{fareResult.finalFare.toLocaleString('en-IN')}</span>
+                  ) : (
+                    <span className="text-2xs sm:text-xs font-bold text-slate-500 block pt-0.5">
+                      Enter pickup & drop location to estimate
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="text-right">
@@ -382,7 +392,11 @@ export default function GetGoBookingModal({
             className="w-full py-3 px-4 rounded-xl bg-[#C62139] hover:bg-[#9E1B2E] text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2"
           >
             <Phone className="w-4 h-4 text-amber-300" />
-            <span>Confirm & Book at ₹{fareResult.finalFare.toLocaleString('en-IN')}</span>
+            <span>
+              {hasLocations
+                ? `Confirm & Book at ₹${fareResult.finalFare.toLocaleString('en-IN')}`
+                : 'Confirm & Book via WhatsApp'}
+            </span>
           </button>
 
           <a

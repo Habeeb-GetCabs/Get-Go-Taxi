@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GetGoHeader from './components/GetGoHeader';
 import GetGoHero from './components/GetGoHero';
 import GetGoStats from './components/GetGoStats';
@@ -9,6 +9,11 @@ import GetGoCabTaxiPage from './components/GetGoCabTaxiPage';
 import GetGoCorporatePage from './components/GetGoCorporatePage';
 import GetGoAboutPage from './components/GetGoAboutPage';
 import GetGoContactPage from './components/GetGoContactPage';
+import GetGoOutstationPage from './components/GetGoOutstationPage';
+import GetGoTariffPage from './components/GetGoTariffPage';
+import GetGoOneWayPage from './components/GetGoOneWayPage';
+import GetGoAirportPage from './components/GetGoAirportPage';
+import GetGoBookNowPage from './components/GetGoBookNowPage';
 import GetGoTestimonials from './components/GetGoTestimonials';
 import GetGoFooter from './components/GetGoFooter';
 import GetGoTourModal from './components/GetGoTourModal';
@@ -16,8 +21,28 @@ import GetGoBookingModal from './components/GetGoBookingModal';
 import GetGoFloatingWidget from './components/GetGoFloatingWidget';
 import { TourPackageItem } from './data/tourData';
 
+function getPageFromPath(path: string): string {
+  const cleanPath = path.toLowerCase().replace(/^\/+|\/+$/g, '');
+  if (!cleanPath || cleanPath === 'home') return 'home';
+  if (cleanPath === 'outstation') return 'outstation';
+  if (cleanPath === 'tariff' || cleanPath === 'pricing' || cleanPath === 'rates') return 'tariff';
+  if (cleanPath === 'oneway' || cleanPath === 'drop-taxi' || cleanPath === 'oneway-drop') return 'oneway';
+  if (cleanPath === 'airport-transfers' || cleanPath === 'airport' || cleanPath === 'airport-taxi') return 'airport-transfers';
+  if (cleanPath === 'book-now' || cleanPath === 'booking' || cleanPath === 'book') return 'book-now';
+  if (cleanPath === 'cab-services' || cleanPath === 'taxi') return 'cab-services';
+  if (cleanPath === 'hourly-packages' || cleanPath === 'hourly') return 'hourly-packages';
+  if (cleanPath === 'popular-routes' || cleanPath === 'routes') return 'popular-routes';
+  if (cleanPath === 'corporate-student' || cleanPath === 'corporate') return 'corporate-student';
+  if (cleanPath === 'about-us' || cleanPath === 'about') return 'about-us';
+  if (cleanPath === 'contact-us' || cleanPath === 'contact') return 'contact-us';
+  return 'home';
+}
+
 export default function App() {
-  const [activePage, setActivePage] = useState<string>('home');
+  const [activePage, setActivePage] = useState<string>(() => {
+    return getPageFromPath(window.location.pathname);
+  });
+
   const [selectedTour, setSelectedTour] = useState<TourPackageItem | null>(null);
   const [bookingModalState, setBookingModalState] = useState<{
     isOpen: boolean;
@@ -28,8 +53,20 @@ export default function App() {
     initialType: 'local',
   });
 
+  useEffect(() => {
+    const onPopState = () => {
+      setActivePage(getPageFromPath(window.location.pathname));
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
   const handleNavigate = (page: string) => {
     setActivePage(page);
+    const targetPath = page === 'home' ? '/' : `/${page}`;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -80,6 +117,16 @@ export default function App() {
             <GetGoTestimonials />
           </>
         )}
+
+        {activePage === 'outstation' && <GetGoOutstationPage />}
+
+        {activePage === 'tariff' && <GetGoTariffPage />}
+
+        {activePage === 'oneway' && <GetGoOneWayPage />}
+
+        {activePage === 'airport-transfers' && <GetGoAirportPage />}
+
+        {activePage === 'book-now' && <GetGoBookNowPage />}
 
         {activePage === 'cab-services' && (
           <GetGoCabTaxiPage onOpenBooking={() => openBooking('local')} />

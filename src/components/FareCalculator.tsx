@@ -27,26 +27,31 @@ export default function FareCalculator() {
 
   // Local state
   const [localDistanceKm, setLocalDistanceKm] = useState<number>(12);
-  const [localPickup, setLocalPickup] = useState<string>('Gandhipuram Central Bus Stand');
-  const [localDrop, setLocalDrop] = useState<string>('Coimbatore International Airport (CJB)');
+  const [localPickup, setLocalPickup] = useState<string>('');
+  const [localDrop, setLocalDrop] = useState<string>('');
 
   // Hourly state
   const [packageHours, setPackageHours] = useState<number>(4);
 
   // One-Way state
   const [oneWayKm, setOneWayKm] = useState<number>(165);
-  const [oneWayPickup, setOneWayPickup] = useState<string>('Coimbatore');
-  const [oneWayDrop, setOneWayDrop] = useState<string>('Salem');
+  const [oneWayPickup, setOneWayPickup] = useState<string>('');
+  const [oneWayDrop, setOneWayDrop] = useState<string>('');
 
   // Outstation state
   const [estimatedKm, setEstimatedKm] = useState<number>(300);
   const [tripDays, setTripDays] = useState<number>(1);
   const [outstationDepartureDate, setOutstationDepartureDate] = useState<string>(today);
   const [outstationReturnDate, setOutstationReturnDate] = useState<string>(today);
-  const [outstationDest, setOutstationDest] = useState<string>('Ooty');
+  const [outstationDest, setOutstationDest] = useState<string>('');
+
+  const hasLocations = tripType === 'hourly' || tripType === 'airport'
+    ? true
+    : (tripType === 'local' ? Boolean(localPickup.trim() && localDrop.trim()) :
+       tripType === 'oneway' ? Boolean(oneWayPickup.trim() && oneWayDrop.trim()) :
+       Boolean(outstationDest.trim()));
 
   const calculateDays = (start: string, end: string) => {
-    if (!start || !end) return 1;
     const startDate = new Date(start);
     const endDate = new Date(end);
     const diffTime = endDate.getTime() - startDate.getTime();
@@ -620,10 +625,18 @@ Note: ${disclaimer.replace('*', '')}
                 Final Estimated Fare
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl sm:text-5xl font-black text-amber-400 tracking-tight">
-                  ₹{finalFare.toLocaleString('en-IN')}
-                </span>
-                <span className="text-xs text-slate-400 font-medium">Fixed Quote</span>
+                {hasLocations ? (
+                  <>
+                    <span className="text-4xl sm:text-5xl font-black text-amber-400 tracking-tight">
+                      ₹{finalFare.toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-xs text-slate-400 font-medium">Fixed Quote</span>
+                  </>
+                ) : (
+                  <span className="text-sm font-bold text-slate-300">
+                    Enter pickup & drop locations above to estimate fare
+                  </span>
+                )}
               </div>
 
               {/* Disclaimer Notice */}
@@ -668,7 +681,11 @@ Note: ${disclaimer.replace('*', '')}
               className="w-full py-3.5 rounded-xl bg-[#C62139] hover:bg-[#9E1B2E] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md"
             >
               <MessageSquare className="w-4 h-4 text-amber-300" />
-              <span>Book Cab via WhatsApp at ₹{finalFare.toLocaleString('en-IN')}</span>
+              <span>
+                {hasLocations
+                  ? `Book Cab via WhatsApp at ₹${finalFare.toLocaleString('en-IN')}`
+                  : 'Book Cab via WhatsApp'}
+              </span>
             </a>
 
             <div className="flex gap-2">

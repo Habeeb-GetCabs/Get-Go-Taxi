@@ -6,8 +6,8 @@ import AddressAutocomplete from './AddressAutocomplete';
 export default function GetGoContactPage() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [pickup, setPickup] = useState('Coimbatore');
-  const [destination, setDestination] = useState('Ooty');
+  const [pickup, setPickup] = useState('');
+  const [destination, setDestination] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
