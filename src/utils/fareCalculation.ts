@@ -344,7 +344,21 @@ function findCoordinate(text: string): { lat: number; lon: number } | null {
 /**
  * Accurately estimates road distance between pickup and drop points
  */
-export function getEstimatedTripDistance(pickup: string, drop: string, defaultTripType: 'local' | 'hourly' | 'oneway' | 'outstation' = 'local'): number {
+export function getEstimatedTripDistance(
+  pickup: string,
+  drop: string,
+  defaultTripType: 'local' | 'hourly' | 'oneway' | 'outstation' = 'local',
+  pickupCoords?: { lat: number; lon: number },
+  dropCoords?: { lat: number; lon: number }
+): number {
+  // If exact coordinates are provided from Geoapify, calculate road distance directly
+  if (pickupCoords && dropCoords && pickupCoords.lat && dropCoords.lat) {
+    const rawDist = haversineRoadDistanceKm(pickupCoords.lat, pickupCoords.lon, dropCoords.lat, dropCoords.lon);
+    if (rawDist > 0) {
+      return Math.max(3, Math.round(rawDist));
+    }
+  }
+
   const pLower = pickup.toLowerCase().trim();
   const dLower = drop.toLowerCase().trim();
 
